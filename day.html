@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wiebke Adventskalender</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="unicorn.svg" type="image/svg+xml">
+</head>
+<body>
+<main class="day">
+  <article class="card" id="card"></article>
+  <nav class="nav" id="nav"></nav>
+</main>
+
+<script src="content.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const test = params.has("test");
+const suffix = test ? "&test=1" : "";
+const now = new Date();
+const today = now.getMonth() === 11 ? now.getDate() : 0;
+const n = parseInt(params.get("day"), 10);
+const card = document.getElementById("card");
+const nav = document.getElementById("nav");
+const home = "index.html" + (test ? "?test=1" : "");
+
+function esc(s){ const d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+
+if (!(n >= 1 && n <= 24) || !(test || n <= today)) {
+  card.innerHTML = '<h2>Noch nicht!</h2><p>Dieses Türchen ist noch zu. Komm bald wieder.</p>';
+  nav.innerHTML = '<a class="btn" href="' + home + '">Zurück zum Kalender</a>';
+} else {
+  try {
+    const o = JSON.parse(localStorage.getItem("wiebke-opened") || "[]");
+    if (!o.includes(n)) { o.push(n); localStorage.setItem("wiebke-opened", JSON.stringify(o)); }
+  } catch (e) {}
+
+  const c = CONTENT[n] || {};
+  const empty = !c.title && !c.text && !c.image;
+  card.innerHTML =
+    '<p class="big">' + n + '</p>' +
+    '<h2>' + esc(c.title || (empty ? "Überraschung!" : "")) + '</h2>' +
+    (c.image ? '<img class="pic" src="' + esc(c.image) + '" alt="' + esc(c.alt || "") + '">' : "") +
+    (c.text ? '<p>' + esc(c.text) + '</p>' : "") +
+    (empty ? '<p>Hier kommt bald etwas Schönes …</p>' : "");
+
+  const prev = n > 1 ? '<a class="btn ghost" href="day.html?day=' + (n - 1) + suffix + '">‹ ' + (n - 1) + '</a>' : '<span class="spacer"></span>';
+  const next = (n < 24 && (test || n + 1 <= today)) ? '<a class="btn ghost" href="day.html?day=' + (n + 1) + suffix + '">' + (n + 1) + ' ›</a>' : '<span class="spacer"></span>';
+  nav.innerHTML = prev + '<a class="btn" href="' + home + '">Alle Türchen</a>' + next;
+}
+</script>
+<script src="snow.js"></script>
+</body>
+</html>

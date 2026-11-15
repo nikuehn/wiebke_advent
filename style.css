@@ -1,0 +1,68 @@
+:root{
+  --night:#2b1f4d; --night2:#40307a; --lilac:#c9b6f2; --rose:#f7a8c8;
+  --mint:#a8e6cf; --butter:#ffe9a8; --ink:#fff;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; min-height:100vh; color:var(--ink);
+  font-family:"Nunito","Trebuchet MS",system-ui,sans-serif; font-size:1.1rem; line-height:1.6;
+  background:
+    radial-gradient(2px 2px at 12% 18%, #fff8 50%, transparent 52%),
+    radial-gradient(2px 2px at 78% 10%, #fff8 50%, transparent 52%),
+    radial-gradient(3px 3px at 90% 42%, #ffe9a8aa 50%, transparent 52%),
+    radial-gradient(2px 2px at 30% 70%, #fff8 50%, transparent 52%),
+    radial-gradient(3px 3px at 6% 88%, #ffe9a8aa 50%, transparent 52%),
+    radial-gradient(2px 2px at 62% 92%, #fff8 50%, transparent 52%),
+    linear-gradient(180deg,var(--night),var(--night2));
+  background-attachment:fixed;
+}
+h1,h2,.num{font-family:"Fredoka","Baloo 2","Trebuchet MS",system-ui,sans-serif; font-weight:600}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--butter); outline-offset:3px}
+
+/* Banner */
+.banner{display:flex; align-items:center; justify-content:center; gap:1rem; padding:1.5rem 1rem 0.5rem; flex-wrap:wrap; text-align:center}
+.banner img{width:clamp(96px,22vw,160px); height:auto; filter:drop-shadow(0 6px 14px #0006)}
+.banner h1{margin:0; font-size:clamp(2rem,7vw,3.8rem); line-height:1.05; letter-spacing:.01em;
+  background:linear-gradient(90deg,var(--rose),var(--butter),var(--mint),var(--lilac));
+  -webkit-background-clip:text; background-clip:text; color:transparent}
+.sub{text-align:center; margin:.25rem 1rem 1.5rem; color:var(--lilac)}
+
+/* Doors */
+.doors{list-style:none; margin:0 auto; padding:0 1rem 3rem; max-width:860px;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:.9rem}
+@media (min-width:640px){.doors{grid-template-columns:repeat(6,1fr); gap:1.1rem}}
+.door{
+  position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  aspect-ratio:3/4; text-decoration:none; color:var(--night);
+  border-radius:50% 50% 14px 14px / 38% 38% 14px 14px;
+  box-shadow:inset 0 -6px 0 #0002, 0 6px 14px #0004;
+  transition:transform .15s;
+}
+.door .num{font-size:clamp(1.5rem,6vw,2.2rem); line-height:1}
+.door .mark{font-size:1rem; height:1.2rem}
+.doors li:nth-child(4n+1) .door{background:var(--rose)}
+.doors li:nth-child(4n+2) .door{background:var(--mint)}
+.doors li:nth-child(4n+3) .door{background:var(--butter)}
+.doors li:nth-child(4n+4) .door{background:var(--lilac)}
+a.door:hover{transform:translateY(-4px) rotate(-1.5deg)}
+.door.locked{filter:saturate(.4) brightness(.7); cursor:not-allowed}
+.door.opened{box-shadow:inset 0 0 0 4px #fff9, 0 6px 14px #0004}
+
+/* Day page */
+.day{max-width:640px; margin:0 auto; padding:1.5rem 1rem 3rem}
+.card{background:#fff; color:var(--night); border-radius:28px; padding:1.5rem; box-shadow:0 10px 30px #0006; text-align:center}
+.card .big{font-family:"Fredoka",sans-serif; font-size:4rem; line-height:1; color:var(--rose); margin:0}
+.card h2{margin:.25rem 0 1rem; font-size:1.8rem}
+.card img.pic{max-width:100%; height:auto; border-radius:18px; margin:.5rem 0 1rem}
+.card p{margin:.5rem 0; text-align:left}
+.nav{display:flex; justify-content:space-between; gap:.5rem; margin-top:1.2rem}
+.btn{display:inline-block; padding:.6rem 1.1rem; border-radius:999px; background:var(--butter); color:var(--night);
+  text-decoration:none; font-weight:700}
+.btn.ghost{background:transparent; color:var(--ink); box-shadow:inset 0 0 0 2px #fff6}
+.nav .spacer{flex:1}
+
+/* Schnee */
+#snow{position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:0}
+.banner,.sub,.doors,.day{position:relative; z-index:1}

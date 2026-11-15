@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wiebke Adventskalender</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="unicorn.svg" type="image/svg+xml">
+</head>
+<body>
+<header class="banner">
+  <img src="unicorn.svg" alt="">
+  <h1>Wiebke<br>Adventskalender</h1>
+</header>
+<p class="sub">Jeden Tag ein neues Türchen!</p>
+<ol class="doors" id="doors"></ol>
+
+<script>
+const params = new URLSearchParams(location.search);
+const test = params.has("test");           // ?test=1 öffnet alle Türchen zum Ausprobieren
+const now = new Date();
+const today = now.getMonth() === 11 ? now.getDate() : 0; // 0 = noch nicht Dezember
+
+let opened = [];
+try { opened = JSON.parse(localStorage.getItem("wiebke-opened") || "[]"); } catch (e) {}
+
+const list = document.getElementById("doors");
+for (let n = 1; n <= 24; n++) {
+  const li = document.createElement("li");
+  const unlocked = test || n <= today;
+  const el = document.createElement(unlocked ? "a" : "span");
+  el.className = "door" + (unlocked ? "" : " locked") + (opened.includes(n) ? " opened" : "");
+  if (unlocked) {
+    el.href = "day.html?day=" + n + (test ? "&test=1" : "");
+    el.setAttribute("aria-label", "Türchen " + n + " öffnen");
+  } else {
+    el.setAttribute("aria-label", "Türchen " + n + " ist noch zu");
+  }
+  el.innerHTML = '<span class="num">' + n + '</span><span class="mark">' +
+    (!unlocked ? "🔒" : opened.includes(n) ? "⭐" : "") + "</span>";
+  li.appendChild(el);
+  list.appendChild(li);
+}
+</script>
+<script src="snow.js"></script>
+</body>
+</html>
